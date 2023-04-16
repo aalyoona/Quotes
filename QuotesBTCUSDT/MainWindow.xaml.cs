@@ -76,6 +76,7 @@ namespace Quotes
                             {
                                 MessageBox.Show($"The current pair is currently not supported on the exchanges that are being monitored. Try swapping symbols or choosing different ones.",
                                 "Pair not supported", MessageBoxButton.OK, MessageBoxImage.Information);
+                                _cts.Cancel();
                             }
                         });
                         await Task.Delay(5000);
