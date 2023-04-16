@@ -1,5 +1,4 @@
 ﻿using Bybit.Net.Clients;
-using System;
 using System.Threading.Tasks;
 
 namespace Quotes.Exchanges
@@ -11,15 +10,22 @@ namespace Quotes.Exchanges
         {
             _client = new BybitClient();
         }
-        public async Task<QuotesModel> GetQuotesBTCUSDT()
+
+        public async Task<QuotesModel> GetQuotes(string firstSymbol, string secondSymbol)
         {
-            var ticker = await _client.SpotApiV1.ExchangeData.GetPriceAsync(Symbols.BybitSymbolBTCUSDT);
+            var ticker = await _client.SpotApiV1.ExchangeData.GetPriceAsync($"{firstSymbol}{secondSymbol}");
+            if (ticker.Data == null)
+            {
+                return null;
+            }
+
             QuotesModel model = new QuotesModel()
             {
                 Exchange = GetType().Name,
-                Price = Math.Round(ticker.Data.Price, 3),
-                Symbol = Symbols.BybitSymbolBTCUSDT
+                Price = ticker.Data.Price,
+                Symbol = $"{firstSymbol}{secondSymbol}"
             };
+
             return model;
         }
     }

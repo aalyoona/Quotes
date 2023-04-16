@@ -7,7 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="300" Width="450">
     <Grid>
-        <DataGrid Name="QuotesDataGrid" AutoGenerateColumns="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock TextWrapping="Wrap" Text="You can select tickets to receive quotes" Margin="3" Width="100" Height="25" FontSize="9"/>
+            <ComboBox x:Name="FirstSymbolComboBox" Margin="3" Width="100" Height="25"/>
+            <ComboBox x:Name="SecondSymbolComboBox" Margin="3" Width="100" Height="25"/>
+            <Button x:Name="btnUpdate" Margin="5" Width="80" Height="25" Content="Update" Click="btnUpdate_Click"/>
+        </StackPanel>
+        <DataGrid Name="QuotesDataGrid" Grid.Row="1" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Source" Width="*" 
                              Binding="{Binding Path=Exchange}">

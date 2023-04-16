@@ -1,5 +1,4 @@
 ﻿using Kucoin.Net.Clients;
-using System;
 using System.Threading.Tasks;
 
 namespace Quotes.Exchanges
@@ -11,14 +10,20 @@ namespace Quotes.Exchanges
         {
             _client = new KucoinClient();
         }
-        public async Task<QuotesModel> GetQuotesBTCUSDT()
+
+        public async Task<QuotesModel> GetQuotes(string firstSymbol, string secondSymbol)
         {
-            var ticker = await _client.SpotApi.ExchangeData.GetTickerAsync(Symbols.KucoinSymbolBTCUSDT);
+            var ticker = await _client.SpotApi.ExchangeData.GetTickerAsync($"{firstSymbol}-{secondSymbol}");
+            if (ticker.Data == null)
+            {
+                return null;
+            }
+
             QuotesModel model = new QuotesModel()
             {
                 Exchange = GetType().Name,
-                Price = Math.Round((decimal)ticker.Data.LastPrice, 3),
-                Symbol = Symbols.KucoinSymbolBTCUSDT
+                Price = (decimal)ticker.Data.LastPrice,
+                Symbol = $"{firstSymbol}-{secondSymbol}"
             };
             return model;
         }
